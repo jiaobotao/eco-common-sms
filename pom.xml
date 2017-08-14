@@ -8,7 +8,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
-	<name>eco-common-sms</name>
+		<name>eco-common-sms</name>
 	<description>eco chain sms send platform</description>
 
 	<parent>

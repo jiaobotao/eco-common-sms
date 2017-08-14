@@ -6,6 +6,7 @@ import com.ecochain.ecocommonsms.entity.SmsHistoryInfo;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -27,7 +28,14 @@ public class EcoCommonSmsService {
     public static final Integer SMS_SEND_MOBILE = 0;            //按照“,”分隔的手机号依次发送短信
     public static final Integer SMS_SEND_TAG = 1;               //按照人员标签发送短信
 
-    private static String url = "http://www.isanjie.com/ztsms/sendNSms.do";
+    @Value("${sms.url}")
+    private String url;
+    @Value("${sms.username}")
+    private String username ;
+    @Value("${sms.password}")
+    private String password ;
+    @Value("${sms.productid}")
+    private String productid;
 
     @Autowired
     private SmsHistoryInfoDao smsHistoryInfoDao;
@@ -75,8 +83,6 @@ public class EcoCommonSmsService {
 
     public ReturnBody SendSMS(ReturnBody rby,String type,String mobile,String content){
         SmsHistoryInfo smsHistoryInfo = SendRecordinfo(type,content,mobile);
-        String username = "sj888";
-        String password = "E7SS4Ibz";
 
         Map<String, String> bodyMap = new HashMap<String, String>();
         bodyMap.put("username", username);//用户名
@@ -84,7 +90,7 @@ public class EcoCommonSmsService {
         String pass = DigestUtils.md5Hex(DigestUtils.md5Hex(password)+startime);
         bodyMap.put("tkey",  startime);
         bodyMap.put("password", pass);//加密后密码
-        bodyMap.put("productid", "676767");//产品id
+        bodyMap.put("productid", productid);//产品id
         bodyMap.put("mobile", mobile);//号码
         bodyMap.put("content",  content);//内容
         bodyMap.put("xh",  "");
